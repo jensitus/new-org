@@ -46,3 +46,7 @@ group :development, :test do
   gem 'faker'
   gem 'database_cleaner'
 end
+
+group :test do
+  gem 'sqlite3'
+end

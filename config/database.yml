@@ -23,6 +23,8 @@ default: &default
 
 development:
   <<: *default
+  host: localhost
+  port: 5432
   database: <%= ENV["NEW_ORG_DEVELOPMENT_DB"] %>
   username: <%= ENV["NEW_ORG_DEVELOPMENT_DB_USER"] %>
   password: <%= ENV["NEW_ORG_DEVELOPMENT_DB_PW"] %>
@@ -57,11 +59,18 @@ development:
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
+#test:
+#  <<: *default
+#  host: localhost
+#  port: 5432
+#  database: new_org_test
+#  username: new_org_test
+#  password: <%#= ENV['NEW_ORG_TEST'] %>
 test:
-  <<: *default
-  database: new_org_test
-  username: new_org_test
-  password: <%= ENV['NEW_ORG_TEST'] %>
+  adapter: sqlite3
+  database: db/test.sqlite3
+  pool: 5
+  timeout: 5000
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is

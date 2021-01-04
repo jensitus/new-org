@@ -25,3 +25,9 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# db stuff
+/db/schema.rb
+db/schema.rb
+/db/test.sqlite3
+.idea/
