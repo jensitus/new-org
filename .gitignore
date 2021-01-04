@@ -31,3 +31,5 @@
 db/schema.rb
 /db/test.sqlite3
 .idea/
+/.idea
+.idea/workspace.xml
