@@ -13,16 +13,16 @@ class ApplicationController < ActionController::API
   private
 
   def auth_req
-    #   token = request.headers['Authorization']
-    #   uri = URI('http://localhost:3001/users/check_token_outside')
-    #   # uri = URI('http://localhost:8080/service/users/auth/check_auth_token')
-    #   response = Net::HTTP.post(uri, token, 'Content-Type' => 'application/json')
-    #   puts response.code.inspect
-    #   if response.code != '200'
-    #     raise ExceptionHandler::Unauthorized, 'Signature has expired'
-    #   else
-    #     puts 'donner'
-    #   end
+      token = request.headers['Authorization']
+      uri = URI('http://localhost:3001/api/auth/users/check_token_outside')
+      # uri = URI('http://localhost:8080/service/users/auth/check_auth_token')
+      response = Net::HTTP.post(uri, { 'access_token' => token }.to_json, 'Content-Type' => 'application/json')
+      puts response.inspect
+      if response.code != '200'
+        raise ExceptionHandler::Unauthorized, 'Signature has expired'
+      else
+        puts 'yeah, 200!'
+      end
   end
 
 end
