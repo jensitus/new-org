@@ -10,7 +10,8 @@ class PostingsController < ApplicationController
   # POST /posts
   def create
     puts posting_params.inspect
-    @posting = Posting.create!(posting_params)
+    puts @current_user_id
+    @posting = Posting.create!(title: posting_params[:title], content: posting_params[:content], user_id: @current_user_id)
     json_response(@posting, :created)
   end
 
@@ -35,7 +36,7 @@ class PostingsController < ApplicationController
   private
 
   def posting_params
-    params.permit(:title, :content, :user_id)
+    params.require(:posting).permit(:title, :content, :user_id)
   end
 
   def set_posting

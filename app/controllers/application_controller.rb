@@ -17,7 +17,8 @@ class ApplicationController < ActionController::API
       uri = URI('http://localhost:3001/api/auth/users/check_token_outside')
       # uri = URI('http://localhost:8080/service/users/auth/check_auth_token')
       response = Net::HTTP.post(uri, { 'access_token' => token }.to_json, 'Content-Type' => 'application/json')
-      puts response.inspect
+      puts response.body
+      @current_user_id = response.body
       if response.code != '200'
         raise ExceptionHandler::Unauthorized, 'Signature has expired'
       else
