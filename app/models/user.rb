@@ -2,12 +2,11 @@ class User < ApplicationRecord
   # encrypt password
   has_secure_password
 
-  has_one_attached :avatar
-
   # before_save :downcase_email
   attr_accessor :reset_token
 
   # has_many :todos, foreign_key: :created_by
+  has_one :ur_org_user
   has_many :postings
   has_many :comments
 

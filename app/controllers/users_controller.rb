@@ -8,7 +8,21 @@ class UsersController < ApplicationController
   end
 
   def show
-    json_response(@user, :ok)
+
+    @ur_org_user = UrOrgUser.find_by_user_id(@user.id)
+    puts @user.inspect
+    puts @ur_org_user.inspect
+    puts @ur_org_user.avatar.blob.inspect
+    a = rails_blob_url(@ur_org_user.avatar)
+    puts 'a:'
+    puts a.inspect
+    u = {
+        id: @ur_org_user.user_id,
+        name: @ur_org_user.name,
+        email: @ur_org_user.email,
+        avatar: rails_blob_url(@ur_org_user.avatar)
+    }
+    json_response(u,:ok)
   end
 
   def create
@@ -18,6 +32,9 @@ class UsersController < ApplicationController
     end
     user_params[:email] = user_params[:email].downcase!
     user = User.create!(user_params)
+    if user
+      UrOrgUser.create!(user_id: user.id, name: user.name, email: user.email)
+    end
     auth_token = AuthenticateUser.new(user.email, user.password).call
     response = {message: Message.account_created, auth_token: auth_token}
     json_response(response, :created)
@@ -30,7 +47,9 @@ class UsersController < ApplicationController
   end
 
   def upload_avatar
-    @user.avatar.attach(params[:avatar])
+    puts @user.id.inspect
+    @ur_org_user = UrOrgUser.find_by_user_id(@user.id)
+    @ur_org_user.avatar.attach(params[:avatar])
   end
 
   private
