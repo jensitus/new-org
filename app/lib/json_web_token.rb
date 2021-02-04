@@ -12,8 +12,6 @@ class JsonWebToken
 
   def self.decode(token)
     # get payload; first index in decoded Array
-    puts 'token:'
-    puts token
     body = JWT.decode(token, HMAC_SECRET)[0]
     HashWithIndifferentAccess.new body
     # rescue from all decode errors
