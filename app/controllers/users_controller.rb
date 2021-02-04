@@ -8,19 +8,12 @@ class UsersController < ApplicationController
   end
 
   def show
-
-    @ur_org_user = UrOrgUser.find_by_user_id(@user.id)
-    puts @user.inspect
-    puts @ur_org_user.inspect
-    puts @ur_org_user.avatar.blob.inspect
-    a = rails_blob_url(@ur_org_user.avatar)
-    puts 'a:'
-    puts a.inspect
+    ur_org_user = UrOrgUser.find_by_user_id(@user.id)
     u = {
-        id: @ur_org_user.user_id,
-        name: @ur_org_user.name,
-        email: @ur_org_user.email,
-        avatar: rails_blob_url(@ur_org_user.avatar)
+        id: ur_org_user.user_id,
+        name: ur_org_user.name,
+        email: ur_org_user.email,
+        avatar: rails_blob_url(ur_org_user.avatar)
     }
     json_response(u,:ok)
   end
