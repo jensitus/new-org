@@ -10,8 +10,8 @@ class PostingsController < ApplicationController
   # POST /posts
   def create
     puts posting_params.inspect
-    puts @current_user_id
-    @posting = Posting.create!(title: posting_params[:title], content: posting_params[:content], user_id: @current_user_id)
+    puts @current_user.id
+    @posting = Posting.create!(title: posting_params[:title], content: posting_params[:content], user_id: @current_user.id)
     json_response(@posting, :created)
   end
 
@@ -40,6 +40,7 @@ class PostingsController < ApplicationController
   end
 
   def set_posting
+    puts params.inspect
     @posting = Posting.find(params[:id])
   end
 

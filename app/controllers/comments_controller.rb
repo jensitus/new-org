@@ -16,8 +16,9 @@ class CommentsController < ApplicationController
 
   # POST /posts/:post_id/comments
   def create
-    @posting.inspect
-    @posting.comments.create!(body: comment_params[:body], posting_id: @posting.id, user_id: @current_user_id)
+    puts @posting.inspect
+    @posting.comments.create!(body: comment_params[:body], posting_id: @posting.id, user_id: @current_user.id)
+    json_response(@posting, :created)
   end
 
   # PUT /posts/:post_id/comments/:id
@@ -43,6 +44,7 @@ class CommentsController < ApplicationController
   end
 
   def set_posting_comment
+    puts params[:id].inspect
     @comment = @posting.comments.find_by!(id: params[:id]) if @posting
   end
 end

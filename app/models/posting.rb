@@ -6,6 +6,7 @@ class Posting < ApplicationRecord
   # t.datetime "updated_at", precision: 6, null: false
 
   has_many :comments, dependent: :destroy
+  belongs_to :user
 
-  validates_presence_of :title, :user_id
+  validates_presence_of :title, :content, :user_id
 end
