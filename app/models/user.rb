@@ -17,8 +17,7 @@ class User < ApplicationRecord
   validates :name, presence: true, length: {minimum: 4, maximum: 30}, uniqueness: true
 
   def User.digest(string)
-    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
-               BCrypt::Engine.cost
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
   end
 
@@ -32,8 +31,8 @@ class User < ApplicationRecord
     update_attribute(:reset_sent_at, Time.zone.now)
   end
 
-  def send_password_reset_email(reset_token)
-    UserMailer.password_reset(self, reset_token).deliver_now
+  def send_password_reset_email(email, reset_token)
+    PwResetMailer.send_pw_reset_info(email, reset_token).deliver_now
   end
 
   def password_reset_expired

@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  post 'api/reset_password/create', to: 'reset_password#create'
+  get 'api/reset_password/check_token/:token', to: 'reset_password#check_token'
+  put 'api/auth/reset_password/:token', to: 'reset_password#reset_password'
   post 'api/auth/login', to: 'authentication#authenticate'
   get 'users/index', to: 'users#index'
   get 'api/users/:id', to: 'users#show'
@@ -6,6 +9,7 @@ Rails.application.routes.draw do
   put 'users/:id/update', to: 'users#update'
   delete 'users/:id/delete', to: 'users#delete'
   post 'api/users/:id/avatar', to: 'users#upload_avatar'
+
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   get    '/api/postings/:posting_id/comments', to: 'comments#index'
   post   '/api/postings/:posting_id/comments', to: 'comments#create'

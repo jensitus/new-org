@@ -41,8 +41,8 @@ class UsersController < ApplicationController
 
   def upload_avatar
     puts @user.id.inspect
-    @ur_org_user = UrOrgUser.find_by_user_id(@user.id)
-    @ur_org_user.avatar.attach(params[:avatar])
+    ur_org_user = UrOrgUser.find_by_user_id(@user.id)
+    ur_org_user.avatar.attach(params[:avatar])
   end
 
   private
