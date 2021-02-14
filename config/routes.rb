@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  get 'api/gallery/index', to: 'photo_gallery#index'
+  get 'api/gallery/show', to: 'photo_gallery#show'
+  post 'api/gallery/create', to: 'photo_gallery#create'
+  put 'api/gallery/:id/update', to: 'photo_gallery#update'
+  delete 'api/gallery/delete', to: 'photo_gallery#delete'
   post 'api/reset_password/create', to: 'reset_password#create'
   get 'api/reset_password/check_token/:token', to: 'reset_password#check_token'
   put 'api/auth/reset_password/:token', to: 'reset_password#reset_password'
@@ -20,6 +25,7 @@ Rails.application.routes.draw do
   post   '/api/postings', to: 'postings#create'
   get    '/api/postings/:id', to: 'postings#show'
   put    '/api/postings/:id', to: 'postings#update'
+  put   '/api/postings/:id/pic', to: 'postings#update_pic'
   delete '/api/postings/:id', to: 'postings#destroy'
 
   resources :postings do

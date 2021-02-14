@@ -13,7 +13,7 @@ class UsersController < ApplicationController
         id: ur_org_user.user_id,
         name: ur_org_user.name,
         email: ur_org_user.email,
-        avatar: rails_blob_url(ur_org_user.avatar)
+        avatar: rails_blob_path(ur_org_user.avatar)
     }
     json_response(u,:ok)
   end
@@ -40,7 +40,6 @@ class UsersController < ApplicationController
   end
 
   def upload_avatar
-    puts @user.id.inspect
     ur_org_user = UrOrgUser.find_by_user_id(@user.id)
     ur_org_user.avatar.attach(params[:avatar])
   end
