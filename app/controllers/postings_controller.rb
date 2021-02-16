@@ -39,7 +39,6 @@ class PostingsController < ApplicationController
   end
 
   def update_pic
-    puts '##############################'
     @posting.photos.attach(params[:photo])
     json_response(@posting, :ok)
   end
