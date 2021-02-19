@@ -2,6 +2,8 @@ class PhotoGalleryController < ApplicationController
   before_action :set_gallery, only: [:show, :update, :delete, :update_pics]
 
   def index
+    galleries = PhotoGallery.where(user_id: params[:user_id])
+    json_response(galleries, :ok)
   end
 
   def show
