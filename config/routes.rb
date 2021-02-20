@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   post   'api/gallery/create', to: 'photo_gallery#create'
   put    'api/gallery/:id/update', to: 'photo_gallery#update'
   put    'api/gallery/:id/pic', to: 'photo_gallery#update_pics'
-  delete 'api/gallery/delete', to: 'photo_gallery#delete'
+  delete 'api/gallery/:id/delete/:attachment_id', to: 'photo_gallery#delete'
 
   post   'api/reset_password/create', to: 'reset_password#create'
   get    'api/reset_password/check_token/:token', to: 'reset_password#check_token'

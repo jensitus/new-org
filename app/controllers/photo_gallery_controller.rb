@@ -1,5 +1,6 @@
 class PhotoGalleryController < ApplicationController
   before_action :set_gallery, only: [:show, :update, :delete, :update_pics]
+  before_action :update_permission, only: [:update, :delete, :update_pics]
 
   def index
     galleries = PhotoGallery.where(user_id: params[:user_id])
@@ -10,7 +11,11 @@ class PhotoGalleryController < ApplicationController
     gallery_photos = []
     if @gallery.photos.attached?
       @gallery.photos.each do |photo|
-        gallery_photos.push(rails_blob_url(photo))
+        gallery_photo = {
+            attachment_id: photo.id,
+            photo_url: rails_blob_url(photo)
+        }
+        gallery_photos.push(gallery_photo)
       end
     end
     gallery = {
@@ -30,6 +35,8 @@ class PhotoGalleryController < ApplicationController
   end
 
   def update
+    @gallery.update(gallery_params)
+    json_response(@gallery, :ok)
   end
 
   def update_pics
@@ -38,6 +45,11 @@ class PhotoGalleryController < ApplicationController
   end
 
   def delete
+    puts ' + + + + + + + + + + + + + + + '
+    puts @gallery.photos.find(params[:attachment_id]).inspect
+    puts ' + + + + + + + + + + + + + + + + '
+    @gallery.photos.find(params[:attachment_id]).purge
+    json_response(Message.deleted, :ok)
   end
 
   private
@@ -48,6 +60,16 @@ class PhotoGalleryController < ApplicationController
 
   def gallery_params
     params.permit(:title, :description, :photo)
+  end
+
+  def update_params
+    params.permit()
+  end
+
+  def update_permission
+    if @gallery.user_id != @current_user.id
+      json_response(Message.no_permission, :forbidden)
+    end
   end
 
 end

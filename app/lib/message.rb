@@ -44,4 +44,12 @@ class Message
     "Password Confirmation doesn't match"
   end
 
+  def self.deleted
+    "deleted"
+  end
+
+  def self.no_permission
+    'You are not allowed to do that'
+  end
+
 end
