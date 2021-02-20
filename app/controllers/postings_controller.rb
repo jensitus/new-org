@@ -1,9 +1,10 @@
 class PostingsController < ApplicationController
   before_action :set_posting, only: [:show, :update, :destroy, :update_pic]
+  before_action :validate_user, only: [:destroy, :update, :update_pic]
 
   # GET /posts
   def index
-    @postings = Posting.all
+    @postings = Posting.order(updated_at: :desc)
     json_response(@postings)
   end
 
@@ -62,6 +63,12 @@ class PostingsController < ApplicationController
 
   def photo_params
     params.require(:posting).permit(photos: [])
+  end
+
+  def validate_user
+    if @posting.user_id != @current_user.id
+      json_response(Message.no_permission, :forbidden)
+    end
   end
 
 end

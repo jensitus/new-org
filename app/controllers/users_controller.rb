@@ -9,11 +9,14 @@ class UsersController < ApplicationController
 
   def show
     ur_org_user = UrOrgUser.find_by_user_id(@user.id)
+    if ur_org_user.avatar.attached?
+      avatar_url = rails_blob_path(ur_org_user.avatar)
+    end
     u = {
         id: ur_org_user.user_id,
         name: ur_org_user.name,
         email: ur_org_user.email,
-        avatar: rails_blob_path(ur_org_user.avatar)
+        avatar: avatar_url
     }
     json_response(u,:ok)
   end
@@ -26,7 +29,13 @@ class UsersController < ApplicationController
     user_params[:email] = user_params[:email].downcase!
     user = User.create!(user_params)
     if user
-      UrOrgUser.create!(user_id: user.id, name: user.name, email: user.email)
+      uou = UrOrgUser.create!(user_id: user.id, name: user.name, email: user.email)
+      uou.avatar.attach(
+          io: File.open('public/img/grav.png'),
+          filename: 'grav.png',
+          content_type: 'image/png',
+          identify: false
+      )
     end
     auth_token = AuthenticateUser.new(user.email, user.password).call
     response = {message: Message.account_created, auth_token: auth_token}
