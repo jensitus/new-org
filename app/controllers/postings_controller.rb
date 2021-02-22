@@ -5,7 +5,18 @@ class PostingsController < ApplicationController
   # GET /posts
   def index
     @postings = Posting.order(updated_at: :desc)
-    json_response(@postings)
+    postings = []
+    @postings.each do |p|
+      posting_photos = []
+      if p.photos.attached?
+        p.photos.each do |photo|
+          posting_photos.push(rails_blob_url(photo))
+        end
+      end
+      posting = PostingDto.new(p.id, p.title, p.content, p.user_id, p.created_at, p.updated_at, posting_photos)
+      postings.push(posting)
+    end
+    json_response(postings, :ok)
   end
 
   # POST /posts
@@ -22,13 +33,15 @@ class PostingsController < ApplicationController
         posting_photos << rails_blob_url(photo)
       end
     end
-    posting = {
-        id: @posting.id,
-        title: @posting.title,
-        content: @posting.content,
-        user_id: @posting.user_id,
-        photos: posting_photos
-    }
+    posting = PostingDto.new(
+        @posting.id,
+        @posting.title,
+        @posting.content,
+        @posting.user_id,
+        @posting.created_at,
+        @posting.updated_at,
+        posting_photos
+    )
     puts @posting.inspect
     json_response(posting, :ok)
   end
