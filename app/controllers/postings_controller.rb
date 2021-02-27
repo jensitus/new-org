@@ -4,8 +4,14 @@ class PostingsController < ApplicationController
 
   # GET /posts
   def index
-    @postings = Posting.order(updated_at: :desc)
+    count = Posting.all.count
+    if params[:limit] == 'undefined' && params[:offset] === 'undefined'
+      @postings = Posting.order(updated_at: :desc)
+    else
+      @postings = Posting.paginated(params[:limit], params[:offset])
+    end
     postings = []
+    posting_hash = Hash.new
     @postings.each do |p|
       posting_photos = []
       if p.photos.attached?
@@ -16,7 +22,8 @@ class PostingsController < ApplicationController
       posting = PostingDto.new(p.id, p.title, p.content, p.user_id, p.created_at, p.updated_at, posting_photos)
       postings.push(posting)
     end
-    json_response(postings, :ok)
+    posting_hash = {count: count, postings: postings}
+    json_response(posting_hash, :ok)
   end
 
   # POST /posts

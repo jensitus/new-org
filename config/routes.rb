@@ -27,15 +27,15 @@ Rails.application.routes.draw do
   put    '/api/postings/:posting_id/comments/:id', to: 'comments#update'
   delete '/api/postings/:posting_id/comments/:id', to: 'comments#destroy'
 
-  get    '/api/postings', to: 'postings#index'
+  get    '/api/postings/:limit/:offset', to: 'postings#index'
   post   '/api/postings', to: 'postings#create'
   get    '/api/postings/:id', to: 'postings#show'
   put    '/api/postings/:id', to: 'postings#update'
   put    '/api/postings/:id/pic', to: 'postings#update_pic'
   delete '/api/postings/:id', to: 'postings#destroy'
 
-  resources :postings do
-    resources :comments
-  end
+  # resources :postings do
+  #   resources :comments
+  # end
 
 end

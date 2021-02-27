@@ -10,4 +10,9 @@ class Posting < ApplicationRecord
   has_many_attached :photos
 
   validates_presence_of :title, :content, :user_id
+
+  def self.paginated(limit = 5, offset = 0)
+    Posting.order(updated_at: :desc).limit(limit).offset(offset)
+  end
+
 end
