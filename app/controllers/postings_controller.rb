@@ -11,7 +11,6 @@ class PostingsController < ApplicationController
       @postings = Posting.paginated(params[:limit], params[:offset])
     end
     postings = []
-    posting_hash = Hash.new
     @postings.each do |p|
       posting_photos = []
       if p.photos.attached?
