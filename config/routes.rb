@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  get 'static/index'
   get    'api/gallery/:user_id/index', to: 'photo_gallery#index'
   get    'api/gallery/:id/show', to: 'photo_gallery#show'
   post   'api/gallery/create', to: 'photo_gallery#create'
