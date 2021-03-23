@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   put    '/api/postings/:id', to: 'postings#update'
   put    '/api/postings/:id/pic', to: 'postings#update_pic'
   delete '/api/postings/:id', to: 'postings#destroy'
+  delete '/api/postings/:id/delete/:attachment_id', to: 'postings#delete_photos'
 
   # resources :postings do
   #   resources :comments

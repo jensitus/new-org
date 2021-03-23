@@ -11,10 +11,7 @@ class PhotoGalleryController < ApplicationController
     gallery_photos = []
     if @gallery.photos.attached?
       @gallery.photos.each do |photo|
-        gallery_photo = {
-            attachment_id: photo.id,
-            photo_url: rails_blob_url(photo)
-        }
+        gallery_photo = PhotoDto.new(photo.id, rails_blob_url(photo))
         gallery_photos.push(gallery_photo)
       end
     end
@@ -45,11 +42,8 @@ class PhotoGalleryController < ApplicationController
   end
 
   def delete
-    puts ' + + + + + + + + + + + + + + + '
-    puts @gallery.photos.find(params[:attachment_id]).inspect
-    puts ' + + + + + + + + + + + + + + + + '
     @gallery.photos.find(params[:attachment_id]).purge
-    json_response(Message.deleted, :ok)
+    json_response(@gallery, :ok)
   end
 
   private

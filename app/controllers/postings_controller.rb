@@ -1,5 +1,5 @@
 class PostingsController < ApplicationController
-  before_action :set_posting, only: [:show, :update, :destroy, :update_pic]
+  before_action :set_posting, only: [:show, :update, :destroy, :update_pic, :delete_photos]
   before_action :validate_user, only: [:destroy, :update, :update_pic]
 
   # GET /posts
@@ -36,7 +36,8 @@ class PostingsController < ApplicationController
     posting_photos = []
     if @posting.photos.attached?
       @posting.photos.each do |photo|
-        posting_photos << rails_blob_url(photo)
+        posting_photo = PhotoDto.new(photo.id, rails_blob_url(photo))
+        posting_photos << posting_photo
       end
     end
     posting = PostingDto.new(
@@ -48,8 +49,12 @@ class PostingsController < ApplicationController
         @posting.updated_at,
         posting_photos
     )
-    puts @posting.inspect
     json_response(posting, :ok)
+  end
+
+  def delete_photos
+    @posting.photos.find(params[:attachment_id]).purge
+    json_response(@posting, :ok)
   end
 
   # PUT /posts/:id
