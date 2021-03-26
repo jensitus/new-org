@@ -58,7 +58,7 @@ RSpec.describe 'Comments API' do
       end
 
       it 'returns a not found message' do
-        expect(response.body).to match(/Couldn't find Comment/)
+        expect(response.body).to match(/Couldn't find CommentModule/)
       end
     end
   end
@@ -101,7 +101,7 @@ RSpec.describe 'Comments API' do
       end
 
       it 'updates the comment' do
-        updated_comment = Comment.find(id)
+        updated_comment = CommentModule.find(id)
         expect(updated_comment.body).to match(/Mozart/)
       end
     end
@@ -114,7 +114,7 @@ RSpec.describe 'Comments API' do
       end
 
       it 'returns a not found message' do
-        expect(response.body).to match(/Couldn't find Comment/)
+        expect(response.body).to match(/Couldn't find CommentModule/)
       end
     end
   end

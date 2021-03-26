@@ -1,12 +1,11 @@
 class CommentsController < ApplicationController
+  include CommentModule
   before_action :set_posting
   before_action :set_posting_comment, only: [:show, :update, :destroy]
 
   # GET /posts/:post_id/comments
   def index
-    c = json_response(@posting.comments)
-    puts c.inspect
-    c
+    json_response(return_comment_list(@posting.comments))
   end
 
   # GET /posts/:post_id/comments/:id
@@ -16,7 +15,6 @@ class CommentsController < ApplicationController
 
   # POST /posts/:post_id/comments
   def create
-    puts @posting.inspect
     @posting.comments.create!(body: comment_params[:body], posting_id: @posting.id, user_id: @current_user.id)
     json_response(@posting, :created)
   end
