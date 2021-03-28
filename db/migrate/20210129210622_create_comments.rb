@@ -4,7 +4,7 @@ class CreateComments < ActiveRecord::Migration[6.1]
 
       t.text :body
       t.uuid :user_id
-      t.references :posting, null: false, foreign_key: true, type: :uuid
+      t.references :micropost, null: false, foreign_key: true, type: :uuid
 
       t.timestamps
 

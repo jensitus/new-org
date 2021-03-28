@@ -1,11 +1,11 @@
 class CommentsController < ApplicationController
   include CommentModule
-  before_action :set_posting
-  before_action :set_posting_comment, only: [:show, :update, :destroy]
+  before_action :set_micropost
+  before_action :set_micropost_comment, only: [:show, :update, :destroy]
 
   # GET /posts/:post_id/comments
   def index
-    json_response(return_comment_list(@posting.comments))
+    json_response(return_comment_list(@micropost.comments))
   end
 
   # GET /posts/:post_id/comments/:id
@@ -15,8 +15,12 @@ class CommentsController < ApplicationController
 
   # POST /posts/:post_id/comments
   def create
-    @posting.comments.create!(body: comment_params[:body], posting_id: @posting.id, user_id: @current_user.id)
-    json_response(@posting, :created)
+    puts '   +  +  +  +    comment_params: + +  +  +   +   +  +'
+    puts comment_params.inspect
+    puts @micropost.inspect
+    puts @current_user.inspect
+    @micropost.comments.create!(body: comment_params[:body], micropost_id: @micropost.id, user_id: @current_user.id)
+    json_response(@micropost, :created)
   end
 
   # PUT /posts/:post_id/comments/:id
@@ -34,15 +38,17 @@ class CommentsController < ApplicationController
   private
 
   def comment_params
-    params.permit(:body)
+    params.permit(:body, :user_id, :micropost_id)
   end
 
-  def set_posting
-    @posting = Posting.find(params[:posting_id])
+  def set_micropost
+    puts params.inspect
+    @micropost = Micropost.find(params[:micropost_id])
   end
 
-  def set_posting_comment
-    puts params[:id].inspect
-    @comment = @posting.comments.find_by!(id: params[:id]) if @posting
+  def set_micropost_comment
+    puts ' +   +   +  +  +  params  *  *  *  *  *'
+    puts params.inspect
+    @comment = @micropost.comments.find_by!(id: params[:id]) if @micropost
   end
 end

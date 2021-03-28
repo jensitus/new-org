@@ -22,21 +22,21 @@ Rails.application.routes.draw do
   post   'api/users/:id/avatar', to: 'users#upload_avatar'
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  get    '/api/postings/:posting_id/comments', to: 'comments#index'
-  post   '/api/postings/:posting_id/comments', to: 'comments#create'
-  get    '/api/postings/:posting_id/comments/:id', to: 'comments#show'
-  put    '/api/postings/:posting_id/comments/:id', to: 'comments#update'
-  delete '/api/postings/:posting_id/comments/:id', to: 'comments#destroy'
+  get    '/api/microposts/:micropost_id/comments', to: 'comments#index'
+  post   '/api/microposts/:micropost_id/comments', to: 'comments#create'
+  get    '/api/microposts/:micropost_id/comments/:id', to: 'comments#show'
+  put    '/api/microposts/:micropost_id/comments/:id', to: 'comments#update'
+  delete '/api/microposts/:micropost_id/comments/:id', to: 'comments#destroy'
 
-  get    '/api/postings/:limit/:offset', to: 'postings#index'
-  post   '/api/postings', to: 'postings#create'
-  get    '/api/postings/:id', to: 'postings#show'
-  put    '/api/postings/:id', to: 'postings#update'
-  put    '/api/postings/:id/pic', to: 'postings#update_pic'
-  delete '/api/postings/:id', to: 'postings#destroy'
-  delete '/api/postings/:id/delete/:attachment_id', to: 'postings#delete_photos'
+  get    '/api/microposts/:limit/:offset', to: 'microposts#index'
+  post   '/api/microposts', to: 'microposts#create'
+  get    '/api/microposts/:id', to: 'microposts#show'
+  put    '/api/microposts/:id', to: 'microposts#update'
+  put    '/api/microposts/:id/pic', to: 'microposts#update_pic'
+  delete '/api/microposts/:id', to: 'microposts#destroy'
+  delete '/api/microposts/:id/delete/:attachment_id', to: 'microposts#delete_photos'
 
-  # resources :postings do
+  # resources :microposts do
   #   resources :comments
   # end
 
