@@ -4,15 +4,15 @@ require 'rails_helper'
 RSpec.describe 'Posts API', type: :request do
   # initialize test data
   let(:user) { create(:user) }
-  let!(:postings) { create_list(:posting, 10, user_id: user.id) }
-  let(:posting_id) { postings.first.id }
+  let!(:microposts) { create_list(:micropost, 10, user_id: user.id) }
+  let(:micropost_id) { microposts.first.id }
   let(:headers) {valid_headers}
 
 
   # Test suite for GET /posts
   describe 'GET /posts' do
     # make HTTP get request before each example
-    before { get '/postings', headers: headers }
+    before { get '/microposts', headers: headers }
 
     it 'returns posts' do
       # Note `json` is a custom helper to parse JSON responses
@@ -26,11 +26,11 @@ RSpec.describe 'Posts API', type: :request do
   end
 
   # Test suite for GET /posts/:id
-  describe 'GET /postings/:id' do
-    before { get "/postings/#{posting_id}", headers: headers }
+  describe 'GET /microposts/:id' do
+    before { get "/microposts/#{posting_id}", headers: headers }
 
     context 'when the record exists' do
-      it 'returns the posting' do
+      it 'returns the micropost' do
         expect(json).not_to be_empty
         expect(json['id']).to eq(posting_id)
       end
@@ -41,7 +41,7 @@ RSpec.describe 'Posts API', type: :request do
     end
 
     context 'when the record does not exist' do
-      let(:posting_id) { 100 }
+      let(:micropost_id) { 100 }
 
       it 'returns status code 404' do
         expect(response).to have_http_status(404)
@@ -63,7 +63,7 @@ RSpec.describe 'Posts API', type: :request do
     end
 
     context 'when the request is valid' do
-      before { post '/postings', params: valid_attributes, headers: headers }
+      before { post '/microposts', params: valid_attributes, headers: headers }
 
       it 'creates a post' do
         expect(json['title']).to eq('Learn Elm')
@@ -75,7 +75,7 @@ RSpec.describe 'Posts API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/postings', params: { title: 'Foobar' }.to_json, headers: headers }
+      before { post '/microposts', params: { title: 'Foobar' }.to_json, headers: headers }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -88,11 +88,11 @@ RSpec.describe 'Posts API', type: :request do
   end
 
   # Test suite for PUT /posts/:id
-  describe 'PUT /postings/:id' do
+  describe 'PUT /microposts/:id' do
     let(:valid_attributes) { { title: 'Shopping' }.to_json }
 
     context 'when the record exists' do
-      before { put "/postings/#{posting_id}", params: valid_attributes, headers: headers }
+      before { put "/microposts/#{posting_id}", params: valid_attributes, headers: headers }
 
       it 'updates the record' do
         expect(response.body).to be_empty
@@ -105,8 +105,8 @@ RSpec.describe 'Posts API', type: :request do
   end
 
   # Test suite for DELETE /todos/:id
-  describe 'DELETE /postings/:id' do
-    before { delete "/postings/#{posting_id}", headers: headers }
+  describe 'DELETE /microposts/:id' do
+    before { delete "/microposts/#{posting_id}", headers: headers }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)

@@ -7,7 +7,7 @@ class Comment < ApplicationRecord
   # t.datetime "updated_at", precision: 6, null: false
   # t.index ["posting_id"], name: "index_comments_on_posting_id"
 
-  belongs_to :posting
+  belongs_to :micropost
 
   validates_presence_of :body
 end

@@ -7,7 +7,7 @@ class User < ApplicationRecord
 
   # has_many :todos, foreign_key: :created_by
   has_one :ur_org_user
-  has_many :postings
+  has_many :microposts
   has_many :comments
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i

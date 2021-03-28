@@ -1,4 +1,4 @@
-class Posting < ApplicationRecord
+class Micropost < ApplicationRecord
   # t.string "title"
   # t.text "content"
   # t.uuid "user_id"
@@ -12,7 +12,7 @@ class Posting < ApplicationRecord
   validates_presence_of :title, :content, :user_id
 
   def self.paginated(limit = 5, offset = 0)
-    Posting.order(updated_at: :desc).limit(limit).offset(offset)
+    Micropost.order(updated_at: :desc).limit(limit).offset(offset)
   end
 
 end

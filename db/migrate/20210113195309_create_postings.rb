@@ -1,6 +1,6 @@
 class CreatePostings < ActiveRecord::Migration[6.1]
   def change
-    create_table :postings, id: :uuid do |t|
+    create_table :microposts, id: :uuid do |t|
       t.string :title
       t.text :content
       t.uuid :user_id
