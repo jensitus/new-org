@@ -8,7 +8,6 @@ class PwResetMailer < ApplicationMailer
   def send_pw_reset_info(email, token)
     @greeting = "Hi"
     @url = "http://localhost:4200/auth/password-reset/" + token + "/edit"
-    puts @url.inspect
     mail to: email, subject: "password reset info"
   end
 end

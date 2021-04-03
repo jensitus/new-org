@@ -2,8 +2,6 @@ class User < ApplicationRecord
   # encrypt password
   has_secure_password
 
-  has_secure_token :password_reset_token
-
   # before_save :downcase_email
   attr_accessor :reset_token
 
