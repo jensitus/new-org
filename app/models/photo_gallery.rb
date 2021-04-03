@@ -1,3 +1,4 @@
 class PhotoGallery < ApplicationRecord
-  has_many_attached :photos
+  belongs_to :photo
+  belongs_to :gallery
 end

@@ -7,7 +7,8 @@ class Micropost < ApplicationRecord
 
   has_many :comments, dependent: :destroy
   belongs_to :user
-  has_many_attached :photos
+  has_many :photo_microposts
+  has_many :photos, through: :photo_microposts
 
   validates_presence_of :title, :content, :user_id
 

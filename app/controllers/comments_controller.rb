@@ -42,7 +42,6 @@ class CommentsController < ApplicationController
   end
 
   def set_micropost
-    puts params.inspect
     @micropost = Micropost.find(params[:micropost_id])
   end
 

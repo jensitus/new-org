@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :micropost do
+  factory :micropost_module do
     title { Faker::Lorem.word }
     content { Faker::Lorem.words }
     user_id { Faker::Internet.uuid }
