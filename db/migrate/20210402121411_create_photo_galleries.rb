@@ -1,9 +1,8 @@
 class CreatePhotoGalleries < ActiveRecord::Migration[6.1]
   def change
     create_table :photo_galleries, id: :uuid do |t|
-      t.string :title
-      t.text :description
-      t.uuid :user_id
+      t.references :photo, null: false, foreign_key: true, type: :uuid
+      t.references :gallery, null: false, foreign_key: true, type: :uuid
 
       t.timestamps
     end

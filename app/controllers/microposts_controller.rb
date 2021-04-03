@@ -1,4 +1,5 @@
 class MicropostsController < ApplicationController
+  include MicropostModule
   before_action :set_micropost, only: [:show, :update, :destroy, :update_pic, :delete_photos]
   before_action :validate_user, only: [:destroy, :update, :update_pic]
 
@@ -11,14 +12,14 @@ class MicropostsController < ApplicationController
       @microposts = Micropost.paginated(params[:limit], params[:offset])
     end
     postings = []
-    @microposts.each do |p|
+    @microposts.each do |m|
       posting_photos = []
-      if p.photos.attached?
-        p.photos.each do |photo|
-          posting_photos.push(rails_blob_url(photo))
+      m.photos.each do |p|
+        if p.image.attached?
+          posting_photos.push(rails_blob_url(p.image))
         end
       end
-      posting = MicropostDto.new(p.id, p.title, p.content, p.user_id, p.created_at, p.updated_at, posting_photos)
+      posting = MicropostDto.new(m.id, m.title, m.content, m.user_id, m.created_at, m.updated_at, posting_photos)
       postings.push(posting)
     end
     posting_hash = {count: count, microposts: postings}
@@ -33,27 +34,23 @@ class MicropostsController < ApplicationController
 
   # GET /posts/:id
   def show
-    posting_photos = []
-    if @micropost.photos.attached?
-      @micropost.photos.each do |photo|
-        posting_photo = PhotoDto.new(photo.id, rails_blob_url(photo))
-        posting_photos << posting_photo
-      end
-    end
-    posting = MicropostDto.new(
-        @micropost.id,
-        @micropost.title,
-        @micropost.content,
-        @micropost.user_id,
-        @micropost.created_at,
-        @micropost.updated_at,
-        posting_photos
-    )
-    json_response(posting, :ok)
+    # postingDto = getMicropostDto(@micropost)
+    json_response(getMicropostDto(@micropost), :ok)
   end
 
   def delete_photos
-    @micropost.photos.find(params[:attachment_id]).purge
+    @micropost.photos.each do |p|
+      puts ''
+      puts p.inspect
+      puts ''
+      puts params.inspect
+      puts ''
+      if p.image.attached? && p.id.eql?(params[:photo_id])
+        p.image.purge
+        @micropost.photos.delete(p)
+        p.delete
+      end
+    end
     json_response(@micropost, :ok)
   end
 
@@ -64,7 +61,9 @@ class MicropostsController < ApplicationController
   end
 
   def update_pic
-    @micropost.photos.attach(params[:photo])
+    photo = @micropost.photos.create!
+    photo.image.attach(params[:image])
+    # @micropost.photos.attach(params[:photo])
     json_response(@micropost, :ok)
   end
 

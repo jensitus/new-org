@@ -1,12 +1,12 @@
 Rails.application.routes.draw do
 
-  get 'static/index'
-  get    'api/gallery/:user_id/index', to: 'photo_gallery#index'
-  get    'api/gallery/:id/show', to: 'photo_gallery#show'
-  post   'api/gallery/create', to: 'photo_gallery#create'
-  put    'api/gallery/:id/update', to: 'photo_gallery#update'
-  put    'api/gallery/:id/pic', to: 'photo_gallery#update_pics'
-  delete 'api/gallery/:id/delete/:attachment_id', to: 'photo_gallery#delete'
+  get    'static/index'
+  get    'api/gallery/:user_id/index', to: 'galleries#index'
+  get    'api/gallery/:id/show', to: 'galleries#show'
+  post   'api/gallery/create', to: 'galleries#create'
+  put    'api/gallery/:id/update', to: 'galleries#update'
+  put    'api/gallery/:id/pic', to: 'galleries#update_pics'
+  delete 'api/gallery/:id/delete/:photo_id', to: 'galleries#delete'
 
   post   'api/reset_password/create', to: 'reset_password#create'
   get    'api/reset_password/check_token/:token', to: 'reset_password#check_token'
@@ -34,7 +34,7 @@ Rails.application.routes.draw do
   put    '/api/microposts/:id', to: 'microposts#update'
   put    '/api/microposts/:id/pic', to: 'microposts#update_pic'
   delete '/api/microposts/:id', to: 'microposts#destroy'
-  delete '/api/microposts/:id/delete/:attachment_id', to: 'microposts#delete_photos'
+  delete '/api/microposts/:id/delete/:photo_id', to: 'microposts#delete_photos'
 
   # resources :microposts do
   #   resources :comments

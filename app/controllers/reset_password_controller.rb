@@ -4,12 +4,13 @@ class ResetPasswordController < ApplicationController
 
   def create
     email = create_token_params[:email]
-    user = User.find_by_email(email)
-    if user.nil?
+    @user = User.find_by_email(email)
+    if @user.nil?
       json_response(Message.email_not_found, :not_found)
     else
-      token = create_reset_token(email)
-      PwResetMailJob.perform_later(user, email, token)
+      @user.create_reset_digest
+      token = create_reset_token(@user.reset_token, email)
+      PwResetMailJob.perform_later(@user, email, token)
       json_response(Message.reset_instructions_sent, :ok)
     end
   end
