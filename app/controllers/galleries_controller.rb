@@ -24,9 +24,6 @@ class GalleriesController < ApplicationController
   end
 
   def update_pics
-    puts '* * * * * * * * * update pics * * * * *  * * * * *'
-    puts params[:image]
-    puts '* * * * * * * * * // update pics * * * * *  * * * * *'
     photo = @gallery.photos.create!
     photo.image.attach(params[:image])
     json_response(getGalleryDto(@gallery), :ok)
