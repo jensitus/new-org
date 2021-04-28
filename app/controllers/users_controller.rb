@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   def show
     ur_org_user = UrOrgUser.find_by_user_id(@user.id)
     if ur_org_user.avatar.attached?
-      avatar_url = rails_blob_path(ur_org_user.avatar)
+      avatar_url = rails_blob_url(ur_org_user.avatar)
     end
     u = {
         id: ur_org_user.user_id,

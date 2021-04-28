@@ -4,7 +4,7 @@ require 'rails_helper'
 RSpec.describe 'Posts API', type: :request do
   # initialize test data
   let(:user) { create(:user) }
-  let!(:microposts) { create_list(:micropost, 10, user_id: user.id) }
+  let!(:microposts) { create_list(:micropost, 30, user_id: user.id) }
   let(:micropost_id) { microposts.first.id }
   let(:headers) {valid_headers}
 
@@ -12,7 +12,7 @@ RSpec.describe 'Posts API', type: :request do
   # Test suite for GET /posts
   describe 'GET /posts' do
     # make HTTP get request before each example
-    before { get '/microposts', headers: headers }
+    before { get "/api/microposts/10/0", headers: headers }
 
     it 'returns posts' do
       # Note `json` is a custom helper to parse JSON responses

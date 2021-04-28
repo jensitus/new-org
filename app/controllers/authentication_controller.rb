@@ -4,9 +4,11 @@ class AuthenticationController < ApplicationController
 
   def authenticate
     auth_token = AuthenticateUser.new(auth_params[:email], auth_params[:password]).call
+    user_id = user.id
+    name = user.name
     ur_org_user = UrOrgUser.find_by_user_id(user.id)
     if ur_org_user.avatar.attached?
-      avatar_url = rails_blob_path(ur_org_user.avatar)
+      avatar_url = rails_blob_url(ur_org_user.avatar)
     end
     u = {
         id: user.id,
