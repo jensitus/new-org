@@ -62,8 +62,8 @@ development:
 test:
   <<: *default
   database: new_org_test
-  username: <%= ENV['AUTHSERVICE_DB_USER'] %>
-  password: <%= ENV['AUTHSERVICE_DB_PW'] %>
+  username: <%= ENV["NEW_ORG_DEVELOPMENT_DB_USER"] %>
+  password: <%= ENV["NEW_ORG_DEVELOPMENT_DB_PW"] %>
 #test:
 #  adapter: sqlite3
 #  database: db/test.sqlite3

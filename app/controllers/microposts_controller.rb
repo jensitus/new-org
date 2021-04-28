@@ -22,6 +22,7 @@ class MicropostsController < ApplicationController
       posting = MicropostDto.new(m.id, m.title, m.content, m.user_id, m.created_at, m.updated_at, posting_photos)
       postings.push(posting)
     end
+    # postings = get_micropost_dto_array
     posting_hash = {count: count, microposts: postings}
     json_response(posting_hash, :ok)
   end
@@ -40,11 +41,6 @@ class MicropostsController < ApplicationController
 
   def delete_photos
     @micropost.photos.each do |p|
-      puts ''
-      puts p.inspect
-      puts ''
-      puts params.inspect
-      puts ''
       if p.image.attached? && p.id.eql?(params[:photo_id])
         p.image.purge
         @micropost.photos.delete(p)
@@ -73,6 +69,10 @@ class MicropostsController < ApplicationController
     head :no_content
   end
 
+  def by_user
+    microposts = Micropost.where(user_id: user_params[:user_id])
+    json_response(get_micropost_dto_array(microposts), :ok)
+  end
 
   private
 
@@ -86,6 +86,10 @@ class MicropostsController < ApplicationController
 
   def photo_params
     params.require(:micropost).permit(photos: [])
+  end
+
+  def user_params
+    params.require(:micropost).permit(:user_id)
   end
 
   def validate_user

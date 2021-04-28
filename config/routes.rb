@@ -35,6 +35,7 @@ Rails.application.routes.draw do
   put    '/api/microposts/:id/pic', to: 'microposts#update_pic'
   delete '/api/microposts/:id', to: 'microposts#destroy'
   delete '/api/microposts/:id/delete/:photo_id', to: 'microposts#delete_photos'
+  get    '/api/microposts/:user_id', to: 'microposts#by_user'
 
   # resources :microposts do
   #   resources :comments
