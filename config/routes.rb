@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   put    '/api/microposts/:micropost_id/comments/:id', to: 'comments#update'
   delete '/api/microposts/:micropost_id/comments/:id', to: 'comments#destroy'
 
+  get    '/api/microposts/by_user_id/:user_id', to: 'microposts#by_user'
   get    '/api/microposts/:limit/:offset', to: 'microposts#index'
   post   '/api/microposts', to: 'microposts#create'
   get    '/api/microposts/:id', to: 'microposts#show'
@@ -35,7 +36,6 @@ Rails.application.routes.draw do
   put    '/api/microposts/:id/pic', to: 'microposts#update_pic'
   delete '/api/microposts/:id', to: 'microposts#destroy'
   delete '/api/microposts/:id/delete/:photo_id', to: 'microposts#delete_photos'
-  get    '/api/microposts/:user_id', to: 'microposts#by_user'
 
   # resources :microposts do
   #   resources :comments

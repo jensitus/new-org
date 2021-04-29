@@ -16,7 +16,8 @@ class MicropostsController < ApplicationController
       posting_photos = []
       m.photos.each do |p|
         if p.image.attached?
-          posting_photos.push(rails_blob_url(p.image))
+          photo = PhotoDto.new(p.id, rails_blob_url(p.image))
+          posting_photos.push(photo)
         end
       end
       posting = MicropostDto.new(m.id, m.title, m.content, m.user_id, m.created_at, m.updated_at, posting_photos)
@@ -70,8 +71,20 @@ class MicropostsController < ApplicationController
   end
 
   def by_user
-    microposts = Micropost.where(user_id: user_params[:user_id])
-    json_response(get_micropost_dto_array(microposts), :ok)
+    microposts = Micropost.where(user_id: user_params[:user_id]).order(created_at: :desc)
+    postings = []
+    microposts.each do |m|
+      posting_photos = []
+      m.photos.each do |p|
+        if p.image.attached?
+          photo = PhotoDto.new(p.id, rails_blob_url(p.image))
+          posting_photos.push(photo)
+        end
+      end
+      posting = MicropostDto.new(m.id, m.title, m.content, m.user_id, m.created_at, m.updated_at, posting_photos)
+      postings.push(posting)
+    end
+    json_response(postings, :ok)
   end
 
   private
@@ -89,7 +102,7 @@ class MicropostsController < ApplicationController
   end
 
   def user_params
-    params.require(:micropost).permit(:user_id)
+    params.permit(:user_id)
   end
 
   def validate_user
