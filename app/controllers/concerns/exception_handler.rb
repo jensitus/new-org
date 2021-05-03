@@ -19,6 +19,13 @@ module ExceptionHandler
       json_response({ message: e.message }, :unprocessable_entity)
     end
 
+    rescue_from ActiveRecord::RecordNotUnique do |e|
+      puts '+++++++++++++++++++'
+      puts e.to_s.split(':').inspect
+      puts '+++++++++++++++++++'
+      json_response({message: e.to_s.split(':').last}, :unprocessable_entity)
+    end
+
     rescue_from ExceptionHandler::MissingToken, with: :four_twenty_two
     rescue_from ExceptionHandler::AuthenticationError, with: :unauthorized_request
     rescue_from ExceptionHandler::InvalidToken do |e|

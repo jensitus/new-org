@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   get    'users/index', to: 'users#index'
   get    'api/users/:id', to: 'users#show'
 
-  put    'users/:id/update', to: 'users#update'
+  put    'api/users/:id/update', to: 'users#update'
   delete 'users/:id/delete', to: 'users#delete'
   post   'api/users/:id/avatar', to: 'users#upload_avatar'
 
