@@ -6,7 +6,7 @@ class User < ApplicationRecord
   attr_accessor :reset_token
 
   # has_many :todos, foreign_key: :created_by
-  has_one :ur_org_user
+  has_one :avatar
   has_many :microposts
   has_many :comments
 

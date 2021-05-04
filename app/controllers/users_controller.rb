@@ -8,17 +8,22 @@ class UsersController < ApplicationController
   end
 
   def show
-    ur_org_user = UrOrgUser.find_by_user_id(@user.id)
-    if ur_org_user.avatar.attached?
-      avatar_url = rails_blob_url(ur_org_user.avatar)
+    if !@user.avatar.nil?
+      if @user.avatar.avatar.attached?
+        avatar_url = rails_blob_url(@user.avatar.avatar)
+      else
+        avatar_url = Avatar::DEFAULT_AVATAR
+      end
+    else
+      avatar_url = Avatar::DEFAULT_AVATAR
     end
     u = {
-        id: ur_org_user.user_id,
-        name: ur_org_user.name,
-        email: ur_org_user.email,
+        id: @user.id,
+        name: @user.name,
+        email: @user.email,
         avatar: avatar_url
     }
-    json_response(u,:ok)
+    json_response(u, :ok)
   end
 
   def create
@@ -28,29 +33,38 @@ class UsersController < ApplicationController
     end
     user_params[:email] = user_params[:email].downcase!
     user = User.create!(user_params)
-    if user
-      uou = UrOrgUser.create!(user_id: user.id, name: user.name, email: user.email)
-      uou.avatar.attach(
-          io: File.open('public/img/grav.png'),
-          filename: 'grav.png',
-          content_type: 'image/png',
-          identify: false
-      )
-    end
     auth_token = AuthenticateUser.new(user.email, user.password).call
     response = {message: Message.account_created, auth_token: auth_token}
     json_response(response, :created)
   end
 
   def update
+    user = User.find(update_params[:id])
+    if user.update(name: update_params[:name], email: update_params[:email])
+      ur_org_user = UrOrgUser.find_by(user_id: user.id)
+      ur_org_user.update(name: user.name, email: user.email)
+    end
+    json_response(ur_org_user, :ok)
   end
 
   def delete
   end
 
   def upload_avatar
-    ur_org_user = UrOrgUser.find_by_user_id(@user.id)
-    ur_org_user.avatar.attach(params[:avatar])
+    a = @user.avatar
+    if a.nil?
+      a = Avatar.create!(user_id: @user.id)
+    end
+    a.avatar.attach(avatar_params[:avatar])
+    puts 'avatar  +  +  +  +  +  +  +  ende'
+    u = {
+        id: @user.id,
+        name: @user.name,
+        email: @user.email,
+        avatar: rails_blob_url(@user.avatar.avatar)
+    }
+    puts u.inspect
+    json_response(u, :ok)
   end
 
   private
@@ -61,6 +75,14 @@ class UsersController < ApplicationController
 
   def user_params
     params.permit(:name, :email, :password, :password_confirmation)
+  end
+
+  def update_params
+    params.require(:user).permit(:id, :name, :email, :avatar, :password)
+  end
+
+  def avatar_params
+    params.permit(:avatar)
   end
 
 end
