@@ -51,18 +51,20 @@ class UsersController < ApplicationController
   end
 
   def upload_avatar
-    # ur_org_user = UrOrgUser.find_by_user_id(@user.id)
-    # ur_org_user.avatar.attach(params[:avatar])
-    puts 'user user user user user'
-    puts @user.inspect
-    puts avatar_params.inspect
-    a = Avatar.new(user_id: @user.id)
-    a.avatar.attach(avatar_params[:avatar])
-    puts a.inspect
-    puts 'avarat ende'
-    if a.save
-      json_response(@user, :ok)
+    a = @user.avatar
+    if a.nil?
+      a = Avatar.create!(user_id: @user.id)
     end
+    a.avatar.attach(avatar_params[:avatar])
+    puts 'avatar  +  +  +  +  +  +  +  ende'
+    u = {
+        id: @user.id,
+        name: @user.name,
+        email: @user.email,
+        avatar: rails_blob_url(@user.avatar.avatar)
+    }
+    puts u.inspect
+    json_response(u, :ok)
   end
 
   private

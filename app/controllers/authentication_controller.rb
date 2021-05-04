@@ -8,7 +8,7 @@ class AuthenticationController < ApplicationController
     name = user.name
     if !user.avatar.nil?
       if user.avatar.avatar.attached?
-        avatar_url = rails_blob_url(ur_org_user.avatar)
+        avatar_url = rails_blob_url(user.avatar.avatar)
       else
         avatar_url = Avatar::DEFAULT_AVATAR
       end
