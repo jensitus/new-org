@@ -56,7 +56,7 @@ class UsersController < ApplicationController
       a = Avatar.create!(user_id: @user.id)
     end
     a.avatar.attach(avatar_params[:avatar])
-    puts 'avatar  +  +  +  +  +  +  +  ende'
+    @user = User.find(@user.id)
     u = {
         id: @user.id,
         name: @user.name,
