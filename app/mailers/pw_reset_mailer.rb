@@ -7,7 +7,7 @@ class PwResetMailer < ApplicationMailer
   #
   def send_pw_reset_info(email, token)
     @greeting = "Hi"
-    @url = "https://ist-ur.org/api/auth/password-reset/" + token + "/edit"
+    @url = "https://ur-org.herokuapp.com/auth/password-reset/" + token + "/edit"
     mail to: email, subject: "password reset info"
   end
 end
