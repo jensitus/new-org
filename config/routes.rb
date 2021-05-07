@@ -8,8 +8,8 @@ Rails.application.routes.draw do
   put    'api/gallery/:id/pic', to: 'galleries#update_pics'
   delete 'api/gallery/:id/delete/:photo_id', to: 'galleries#delete'
 
-  post   'api/reset_password/create', to: 'reset_password#create'
-  get    'api/reset_password/check_token/:token', to: 'reset_password#check_token'
+  post   'api/auth/reset_password/create', to: 'reset_password#create'
+  get    'api/auth/reset_password/check_token/:token', to: 'reset_password#check_token'
   put    'api/auth/reset_password/:token', to: 'reset_password#reset_password'
   post   'api/auth/login', to: 'authentication#authenticate'
   post   '/api/auth/signup', to: 'users#create'
