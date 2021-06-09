@@ -10,7 +10,7 @@ class ResetPasswordController < ApplicationController
     else
       @user.create_reset_digest
       token = create_reset_token(@user.reset_token, email)
-      PwResetMailJob.perform_later(@user, email, token)
+      # PwResetMailJob.perform_later(@user, email, token)
       json_response(Message.reset_instructions_sent, :ok)
     end
   end
