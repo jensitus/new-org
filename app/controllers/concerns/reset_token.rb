@@ -2,12 +2,17 @@ module ResetToken
 
   def create_reset_token(token, email)
     u = {
+        email: email,
         token: token,
-        exp: Time.now,
-        email: email
+        exp: Time.now
     }
-
-    Base64.urlsafe_encode64(encrypt_and_sign(u))
+    e = encrypt_and_sign(email)
+    e64 = Base64.encode64(email)
+    token64 = Base64.urlsafe_encode64(token)
+    b64 = Base64.urlsafe_encode64(e)
+    u64encrypt_and_sign = encrypt_and_sign(u)
+    u64 = Base64.urlsafe_encode64(u64encrypt_and_sign)
+    b64
   end
 
   def check_reset_token(token)
